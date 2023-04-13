@@ -1,8 +1,8 @@
 export function Company(props) {
   return (
-    <div>
-      <h2>{props.name}</h2>
+    <div className="logo">
       <p>{props.logo}</p>
+      <h2>{props.name}</h2>
     </div>
   );
 }
