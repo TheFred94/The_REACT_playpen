@@ -11,7 +11,7 @@ export function Header() {
           <li>Our services</li>
           <li>Testimonials</li>
         </ul>
-        <Button />
+        <Button>Contact</Button>
       </nav>
     </header>
   );

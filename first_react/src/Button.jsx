@@ -1,3 +1,3 @@
-export function Button() {
-  return <button className="cta_button">Contact us</button>;
+export function Button(props) {
+  return <button className="cta_button">{props.children}</button>;
 }
