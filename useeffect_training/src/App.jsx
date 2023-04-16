@@ -18,16 +18,23 @@ function App() {
   }, []);
 
   return (
-    // This one is automatic
-    <ul>
-      {articles.map((art) => (
-        <li>
-          <article>{art.productdisplayname}</article>
-          {/* Conditional rendering (Short curcuit evaluation) - If the product has a discount it shows "On sale now!"  */}
-          {art.discount && <p>On sale now!</p>}
-        </li>
-      ))}
-    </ul>
+    <>
+      {/* When the page is refreshed it shows "Loading..." before showing the content of articles. */}
+      {articles.length === 0 ? (
+        <p>LOADING...</p>
+      ) : (
+        <ul>
+          {articles.map((art) => (
+            <li>
+              <article>{art.productdisplayname}</article>
+              {/* Conditional rendering (Short curcuit evaluation) - If the product has a discount it shows "On sale now!"  */}
+              {art.discount && <p>On sale now!</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+      {/* This one is automatic */}
+    </>
   );
 }
 
