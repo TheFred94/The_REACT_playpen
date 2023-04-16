@@ -21,6 +21,11 @@ function App() {
       id: 3,
     },
   ]);
+  // Here we update the state. We take the oldState where we have filtered out the task that is NOT equal to whatever id that we receive from the function.
+  function completeTask(id) {
+    setTasks((oldState) => oldState.filter((task) => task.id !== id));
+  }
+
   const handler = () => {
     console.log("handler called");
   };
@@ -28,7 +33,8 @@ function App() {
     <div className="App">
       <Form clickHandler={handler} />
       {/* List gets the initial state from the const [tasks, setTasks]*/}
-      <List tasks={tasks} />
+      {/* List also retrieves a function called completeTask which points to the actual function completeTask*/}
+      <List tasks={tasks} completeTask={completeTask} />
     </div>
   );
 }
@@ -50,7 +56,8 @@ function List(props) {
       <p>Some List</p>
       {props.tasks.map((task) => (
         // To show each task in as their own element we use the ... spread operator to devide the array into meaningfull tasks
-        <ListItem {...task} />
+        // completeTasks is passed down to ListItem coming from the parent component List. We use props because it's passed down from it's parent component.
+        <ListItem completeTask={props.completeTask} {...task} />
       ))}
     </ul>
   );
@@ -63,7 +70,8 @@ function ListItem(props) {
       <article>
         {/* Using the {props.task} then gets each individual task from the ListItem because we used the spreap operator ...task on the ListItem.   */}
         <p>{props.task}</p>
-        <button>Complete</button>
+        {/* We use an anonomys function in the onClick event to not call it immidiatly after it's clicked. We parse in props.id to send the id back to the parent component so the correct task is removed */}
+        <button onClick={() => props.completeTask(props.id)}> Complete</button>
       </article>
     </li>
   );
