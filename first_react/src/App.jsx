@@ -3,7 +3,6 @@ import { Header } from "./Header";
 import { SplashText } from "./SplashText";
 import { SplashImage } from "./SplashImage";
 import { LogoBar } from "./LogoBar";
-import { Company } from "./Company";
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
         <section>
           <SplashImage />
         </section>
-
         <LogoBar />
       </main>
     </>

@@ -38,6 +38,7 @@ export function LogoBar() {
   ];
   return (
     <section className="logobar">
+      {/* Uses the MAP function to create a component from each of the companies  */}
       {companies.map((company) => (
         <Company name={company.name} logo={company.logo} />
       ))}
