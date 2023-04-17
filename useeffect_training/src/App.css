@@ -6,3 +6,11 @@ main {
 .load_more_products {
   grid-column: 1 /2;
 }
+
+.Product_List {
+  grid-column: 1 /2;
+}
+
+.Basket {
+  grid-column: 2 /3;
+}
