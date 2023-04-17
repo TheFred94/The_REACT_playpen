@@ -20,28 +20,19 @@ function App() {
 
   return (
     <>
-      {/* When the page is refreshed it shows "Loading..." before showing the content of articles. */}
-      {articles.length === 0 ? (
-        <p>LOADING...</p>
-      ) : (
-        <ul>
-          {/* Creating the component Product with functions and passing it down to the Product component */}
-          {articles.map((article) => (
-            <Product key={article.id} product={article} buyProduct={buyProduct} />
-          ))}
-        </ul>
-      )}
+      {/* Creating the component Product with functions and passing it down to the Product component */}
+      {articles.map((article) => (
+        <Product key={article.id} product={article} buyProduct={buyProduct} />
+      ))}
+
       {/* Whenever we click it updates the pagecounter and sends a new request because we told the useEffect Hook to look out for changes in page  */}
       <button onClick={() => setPage((oldPage) => oldPage + 1)}>Load 10 more products({page})</button>
     </>
   );
-
-  function buyProduct(id) {
-    console.log("clicked product");
-  }
 }
-
-function ProductList({ product, buyProduct }) {}
+function buyProduct() {
+  console.log("Product clicked");
+}
 
 function Product({ product, buyProduct }) {
   return (

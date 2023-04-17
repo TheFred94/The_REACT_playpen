@@ -86,7 +86,7 @@ function ListItem(props) {
   return (
     <li>
       <article>
-        {/* Using the {props.task} then gets each individual task from the ListItem because we used the spreap operator ...task on the ListItem.   */}
+        {/* Using the {props.task} then gets each individual task from the ListItem because we used the spread operator ...task on the ListItem.   */}
         <p>{props.task}</p>
         {/* We use an anonomys function in the onClick event to not call it immidiatly after it's clicked. We parse in props.id to send the id back to the parent component so the correct task is removed */}
         <button onClick={() => props.completeTask(props.id)}> Complete</button>
