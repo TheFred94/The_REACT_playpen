@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
 
   images: {
-    domains: ["images.unsplash.com"],
+    domains: ["images.unsplash.com", "i.etsystatic.com"],
 
     // The default values
     // imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

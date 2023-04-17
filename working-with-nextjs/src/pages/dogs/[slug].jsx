@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Head from "next/head";
+import Image from "next/image";
 
-export default function Henry({ data }) {
-  // You could also do like this to avoid writing data. in front of all content properties
+export default function Dogs({ data }) {
   const { content } = data;
   return (
     <>
@@ -16,9 +15,16 @@ export default function Henry({ data }) {
   );
 }
 
-export async function getStaticProps() {
-  const api = "https://bucolic-bombolone-857476.netlify.app/api/dogs/henry";
+export async function getServerSideProps(context) {
+  const slug = context.params.slug;
+  const api = "https://bucolic-bombolone-857476.netlify.app/api/dogs/" + slug;
   const res = await fetch(api);
+  if (res.status != 200) {
+    return {
+      notFound: true,
+    };
+  }
+
   const data = await res.json();
   console.log(data);
 
