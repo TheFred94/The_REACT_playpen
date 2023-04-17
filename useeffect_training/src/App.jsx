@@ -1,48 +1,45 @@
 import { useState, useEffect } from "react";
-
 import "./App.css";
-
 function App() {
   //  Creates state and set it to []
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(0);
-  //  Uses an arrow function for the callback
+
   useEffect(() => {
     fetch("https://kea-alt-del.dk/t7/api/products?start=" + page * 10)
       .then((res) => res.json())
       .then((data) => {
         // set state which triggers the render again
         setArticles(data);
-        console.log(data);
       });
-    // Runs this useEffect when the page is loaded and whenever it changes
   }, [page]);
 
   return (
     <>
-      {/* Creating the component Product with functions and passing it down to the Product component */}
-      {articles.map((article) => (
-        <Product key={article.id} product={article} buyProduct={buyProduct} />
-      ))}
-
-      {/* Whenever we click it updates the pagecounter and sends a new request because we told the useEffect Hook to look out for changes in page  */}
+      <ProductList articles={articles} />
       <button onClick={() => setPage((oldPage) => oldPage + 1)}>Load 10 more products({page})</button>
     </>
   );
 }
-function buyProduct() {
-  console.log("Product clicked");
+
+function ProductList(props) {
+  return (
+    <ul>
+      <p>List of products</p>
+      {props.articles.map((article) => (
+        <Product {...article} />
+      ))}
+    </ul>
+  );
 }
 
-function Product({ product, buyProduct }) {
+function Product(props) {
   return (
-    <li key={product.id}>
+    <li>
       <article>
-        <h2>{product.productdisplayname}</h2>
-        <button onClick={buyProduct}>Buy product</button>
+        <p>{props.productdisplayname}</p>
+        <button>Buy Product</button>
       </article>
-      {/* Conditional rendering (Short curcuit evaluation) - If the product has a discount it shows "On sale now!"  */}
-      {product.discount && <p>On sale now!</p>}
     </li>
   );
 }
