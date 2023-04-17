@@ -1,5 +1,5 @@
 export default function RandomDog({ imgUrl }) {
-  console.log(imgUrl);
+  console.log(data);
   return (
     <>
       <h1>Random dog</h1>
