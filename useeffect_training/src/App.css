@@ -1,0 +1,8 @@
+main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.load_more_products {
+  grid-column: 1 /2;
+}

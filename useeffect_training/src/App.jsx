@@ -3,6 +3,7 @@ import "./App.css";
 function App() {
   //  Creates state and set it to []
   const [articles, setArticles] = useState([]);
+  const [basket, setBasket] = useState([]);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
@@ -14,10 +15,18 @@ function App() {
       });
   }, [page]);
 
+  function buyProduct(id) {
+    console.log(id);
+  }
+
   return (
     <>
-      <ProductList articles={articles} />
-      <button onClick={() => setPage((oldPage) => oldPage + 1)}>Load 10 more products({page})</button>
+      <main>
+        <ProductList buyProduct={buyProduct} articles={articles} />
+        <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
+          Load 10 more products({page})
+        </button>
+      </main>
     </>
   );
 }
@@ -27,7 +36,7 @@ function ProductList(props) {
     <ul>
       <p>List of products</p>
       {props.articles.map((article) => (
-        <Product {...article} />
+        <Product buyProduct={props.buyProduct} {...article} />
       ))}
     </ul>
   );
@@ -38,7 +47,7 @@ function Product(props) {
     <li>
       <article>
         <p>{props.productdisplayname}</p>
-        <button>Buy Product</button>
+        <button onClick={() => props.buyProduct(props.id)}>Buy Product</button>
       </article>
     </li>
   );
