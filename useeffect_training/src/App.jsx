@@ -4,12 +4,10 @@ import "./App.css";
 // API: https://kea-alt-del.dk/t7/api/#parameters
 
 function App() {
-  //  Creates state and set it to []
+  //  Creates state and set it to [] (an empty array)
   const [articles, setArticles] = useState([]);
   const [basket, setBasket] = useState([]);
   const [page, setPage] = useState(0);
-  const productid = 1165;
-  const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
 
   useEffect(() => {
     fetch("https://kea-alt-del.dk/t7/api/products?start=" + page * 10)
@@ -20,16 +18,19 @@ function App() {
       });
   }, [page]);
 
+  // Takes the state of the oldBasket and concats it with the product that corresponds to that of the "Buy Product" button
   function buyProduct(product) {
     setBasket((oldBasket) => oldBasket.concat(product));
     console.log("basket", basket);
     console.log(product);
   }
 
+  // Removes the the product which is NOT equal to the id we recive from the function
   function removeProduct(id) {
     setBasket((oldBasket) => oldBasket.filter((product) => product.id !== id));
   }
 
+  // Empties the array and removes all the products from the basket
   function emptyBasket() {
     setBasket((oldBasket) => (oldBasket = []));
   }
@@ -67,7 +68,7 @@ function Product(props) {
   const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
   return (
     <li>
-      <article>
+      <article className="product">
         <p>{props.article.productdisplayname}</p>
         <p>Price: {props.article.price} kr.</p>
         <p>{props.article.discount && <p>On Sale!</p>} </p>
@@ -97,10 +98,12 @@ function BasketProduct(props) {
   const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
   return (
     <li>
-      <p>{props.product.productdisplayname}</p>
-      <p>Price: {props.product.price}</p>
-      <img src={imagePath} />
-      <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
+      <article className="product">
+        <p>{props.product.productdisplayname}</p>
+        <p>Price: {props.product.price}</p>
+        <img src={imagePath} />
+        <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
+      </article>
     </li>
   );
 }

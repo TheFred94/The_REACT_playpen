@@ -24,3 +24,12 @@ img {
 li {
   list-style: none;
 }
+
+.product {
+  border-radius: 5px;
+  box-shadow: 10px 10px 20px #dfdfdf;
+
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #f2f2f2;
+}
