@@ -15,9 +15,10 @@ function App() {
       });
   }, [page]);
 
-  function buyProduct(article, id) {
-    setBasket((oldBasket) => oldBasket.concat(article));
+  function buyProduct(product, id) {
+    setBasket((oldBasket) => oldBasket.concat(product));
     console.log("basket", basket);
+    console.log(product);
     console.log(id);
   }
 
@@ -43,7 +44,7 @@ function ProductList(props) {
     <ul>
       <p>List of products</p>
       {props.articles.map((article) => (
-        <Product buyProduct={props.buyProduct} {...article} />
+        <Product buyProduct={props.buyProduct} article={{ ...article }} />
       ))}
     </ul>
   );
@@ -53,7 +54,7 @@ function Product(props) {
   return (
     <li>
       <article>
-        <p>{props.productdisplayname}</p>
+        <p>{props.article.productdisplayname}</p>
         <button onClick={() => props.buyProduct(props.article, props.id)}>Buy Product</button>
       </article>
     </li>
@@ -64,6 +65,7 @@ function Basket(props) {
   return (
     <>
       <ul>
+        <p>Basket</p>
         {props.basket.map((product) => (
           <BasketProduct product={{ ...product }} />
         ))}
@@ -75,7 +77,8 @@ function Basket(props) {
 function BasketProduct(props) {
   return (
     <li>
-      <article>{props.product.productdisplayname}</article>
+      <p>{props.product.productdisplayname}</p>
+      <button>Remove product</button>
     </li>
   );
 }
