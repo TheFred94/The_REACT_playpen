@@ -8,7 +8,6 @@ function App() {
   const [articles, setArticles] = useState([]);
   const [basket, setBasket] = useState([]);
   const [page, setPage] = useState(0);
-  const [productCount, setProductCount] = useState(1);
 
   useEffect(() => {
     fetch("https://kea-alt-del.dk/t7/api/products?start=" + page * 10)
@@ -19,12 +18,21 @@ function App() {
       });
   }, [page]);
 
-  // Takes the state of the oldBasket and concats it with the product that corresponds to that of the "Buy Product" button
+  // Takes the state of the  and concats it with the product that corresponds to that of the "Buy Product" button
   function buyProduct(product) {
-    setBasket((oldBasket) => oldBasket.concat(product));
+    // Find the basket item that matches the product ID
+    const basketItem = basket.find((item) => item.id === product.id);
 
-    console.log("basket", basket);
-    console.log(product);
+    if (basketItem) {
+      // If the product already exists in the basket, increment the count of the BasketProduct
+      const updatedBasket = basket.map((item) => (item.id === product.id ? { ...item, count: item.count + 1 } : item));
+      // Update the basket state with the updated basket
+      setBasket(updatedBasket);
+    } else {
+      // If the product does not exist in the basket, add it as a new item with count = 1
+      // Add the new product to the basket state
+      setBasket((oldBasket) => [...oldBasket, { ...product, count: 1 }]);
+    }
   }
 
   // Removes the the product which is NOT equal to the id we recive from the function
@@ -46,7 +54,7 @@ function App() {
         </section>
         <section className="Basket">
           {/* Sends down emptyBasket, removeProduct and basket to Basket component */}
-          <Basket productCount={productCount} setProductCount={setProductCount} emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
+          <Basket emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
         </section>
         <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
           Load 10 more products({page})
@@ -96,7 +104,7 @@ function Basket(props) {
         {/* Creates a new ...product with the spreat operator */}
         {props.basket.map((product) => (
           // Passes down removeProduct and the ...product variable down to the BasketProduct component
-          <BasketProduct setProductCount={props.setProductCount} productCount={props.productCount} removeProduct={props.removeProduct} product={{ ...product }} />
+          <BasketProduct removeProduct={props.removeProduct} product={{ ...product }} />
         ))}
       </ul>
     </>
@@ -113,7 +121,8 @@ function BasketProduct(props) {
       <article className="product">
         <p>{props.product.productdisplayname}</p>
         <p>Price: {props.product.price}</p>
-        <span>{props.productCount}</span>
+        {/* If the count is greater that 0. If that is true it render the count paragraph */}
+        <span>{props.product.count > 0 && <p>({props.product.count})</p>}</span>
         <img src={imagePath} />
         <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
       </article>
