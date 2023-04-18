@@ -69,7 +69,8 @@ function Product(props) {
     <li>
       <article>
         <p>{props.article.productdisplayname}</p>
-
+        <p>Price: {props.article.price} kr.</p>
+        <p>{props.article.discount && <p>On Sale!</p>} </p>
         <img src={imagePath} />
         <button onClick={() => props.buyProduct(props.article)}>Buy Product</button>
       </article>
@@ -97,6 +98,7 @@ function BasketProduct(props) {
   return (
     <li>
       <p>{props.product.productdisplayname}</p>
+      <p>Price: {props.product.price}</p>
       <img src={imagePath} />
       <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
     </li>
