@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+
+// API: https://kea-alt-del.dk/t7/api/#parameters
+
 function App() {
   //  Creates state and set it to []
   const [articles, setArticles] = useState([]);
   const [basket, setBasket] = useState([]);
   const [page, setPage] = useState(0);
+  const productid = 1165;
+  const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
 
   useEffect(() => {
     fetch("https://kea-alt-del.dk/t7/api/products?start=" + page * 10)
@@ -15,11 +20,10 @@ function App() {
       });
   }, [page]);
 
-  function buyProduct(product, id) {
+  function buyProduct(product) {
     setBasket((oldBasket) => oldBasket.concat(product));
     console.log("basket", basket);
     console.log(product);
-    console.log(id);
   }
 
   function removeProduct(id) {
@@ -55,10 +59,14 @@ function ProductList(props) {
 }
 
 function Product(props) {
+  const productid = props.article.id;
+  const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
   return (
     <li>
       <article>
         <p>{props.article.productdisplayname}</p>
+        <p>{props.article.id}</p>
+        <img src={imagePath} />
         <button onClick={() => props.buyProduct(props.article, props.id)}>Buy Product</button>
       </article>
     </li>
