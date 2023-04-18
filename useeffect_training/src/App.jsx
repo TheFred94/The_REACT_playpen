@@ -30,6 +30,10 @@ function App() {
     setBasket((oldBasket) => oldBasket.filter((product) => product.id !== id));
   }
 
+  function emptyBasket() {
+    setBasket((oldBasket) => (oldBasket = []));
+  }
+
   return (
     <>
       <main>
@@ -37,7 +41,7 @@ function App() {
           <ProductList buyProduct={buyProduct} articles={articles} />
         </section>
         <section className="Basket">
-          <Basket removeProduct={removeProduct} basket={basket} />
+          <Basket emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
         </section>
         <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
           Load 10 more products({page})
@@ -50,7 +54,7 @@ function App() {
 function ProductList(props) {
   return (
     <ul>
-      <p>List of products</p>
+      <h2>List of products</h2>
       {props.articles.map((article) => (
         <Product buyProduct={props.buyProduct} article={{ ...article }} />
       ))}
@@ -65,7 +69,7 @@ function Product(props) {
     <li>
       <article>
         <p>{props.article.productdisplayname}</p>
-        <p>{props.article.id}</p>
+
         <img src={imagePath} />
         <button onClick={() => props.buyProduct(props.article)}>Buy Product</button>
       </article>
@@ -77,7 +81,8 @@ function Basket(props) {
   return (
     <>
       <ul>
-        <p>Basket</p>
+        <h2>Basket</h2>
+        <button onClick={() => props.emptyBasket(props.product)}>Remove all items</button>
         {props.basket.map((product) => (
           <BasketProduct removeProduct={props.removeProduct} product={{ ...product }} />
         ))}
