@@ -67,7 +67,7 @@ function Product(props) {
         <p>{props.article.productdisplayname}</p>
         <p>{props.article.id}</p>
         <img src={imagePath} />
-        <button onClick={() => props.buyProduct(props.article, props.id)}>Buy Product</button>
+        <button onClick={() => props.buyProduct(props.article)}>Buy Product</button>
       </article>
     </li>
   );
@@ -87,9 +87,12 @@ function Basket(props) {
 }
 
 function BasketProduct(props) {
+  const productid = props.product.id;
+  const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
   return (
     <li>
       <p>{props.product.productdisplayname}</p>
+      <img src={imagePath} />
       <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
     </li>
   );

@@ -14,3 +14,9 @@ main {
 .Basket {
   grid-column: 2 /3;
 }
+
+img {
+  width: 100%;
+  height: auto;
+  max-width: 200px;
+}
