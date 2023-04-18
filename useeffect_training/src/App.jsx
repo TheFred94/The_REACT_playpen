@@ -22,6 +22,10 @@ function App() {
     console.log(id);
   }
 
+  function removeProduct(id) {
+    setBasket((oldBasket) => oldBasket.filter((product) => product.id !== id));
+  }
+
   return (
     <>
       <main>
@@ -29,7 +33,7 @@ function App() {
           <ProductList buyProduct={buyProduct} articles={articles} />
         </section>
         <section className="Basket">
-          <Basket basket={basket} />
+          <Basket removeProduct={removeProduct} basket={basket} />
         </section>
         <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
           Load 10 more products({page})
@@ -67,7 +71,7 @@ function Basket(props) {
       <ul>
         <p>Basket</p>
         {props.basket.map((product) => (
-          <BasketProduct product={{ ...product }} />
+          <BasketProduct removeProduct={props.removeProduct} product={{ ...product }} />
         ))}
       </ul>
     </>
@@ -78,7 +82,7 @@ function BasketProduct(props) {
   return (
     <li>
       <p>{props.product.productdisplayname}</p>
-      <button>Remove product</button>
+      <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
     </li>
   );
 }
