@@ -39,9 +39,11 @@ function App() {
     <>
       <main>
         <section className="Product_List">
+          {/* Sends down the buyProduct and articles to ProductList component */}
           <ProductList buyProduct={buyProduct} articles={articles} />
         </section>
         <section className="Basket">
+          {/* Sends down emptyBasket, removeProduct and basket to Basket component */}
           <Basket emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
         </section>
         <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
@@ -56,7 +58,9 @@ function ProductList(props) {
   return (
     <ul>
       <h2>List of products</h2>
+      {/* Receives the props.artcles from the App component */}
       {props.articles.map((article) => (
+        // Sends down the props.buyProduct received from the App
         <Product buyProduct={props.buyProduct} article={{ ...article }} />
       ))}
     </ul>
@@ -66,12 +70,13 @@ function ProductList(props) {
 function Product(props) {
   const productid = props.article.id;
   const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
+  // Receives the props.article. passed down from App to ProductList to this Product component
   return (
     <li>
       <article className="product">
         <p>{props.article.productdisplayname}</p>
         <p>Price: {props.article.price} kr.</p>
-        <p>{props.article.discount && <p>On Sale!</p>} </p>
+        <span>{props.article.discount && <p className="onsale">On Sale!</p>}</span>
         <img src={imagePath} />
         <button onClick={() => props.buyProduct(props.article)}>Buy Product</button>
       </article>
@@ -79,13 +84,16 @@ function Product(props) {
   );
 }
 
+// Receives the props. from the App component
 function Basket(props) {
   return (
     <>
       <ul>
         <h2>Basket</h2>
         <button onClick={() => props.emptyBasket(props.product)}>Remove all items</button>
+        {/* Creates a new ...product with the spreat operator */}
         {props.basket.map((product) => (
+          // Passes down removeProduct and the ...product variable down to the BasketProduct component
           <BasketProduct removeProduct={props.removeProduct} product={{ ...product }} />
         ))}
       </ul>
@@ -93,6 +101,7 @@ function Basket(props) {
   );
 }
 
+// Receives the props from Basket received from the App component and calls it props.product
 function BasketProduct(props) {
   const productid = props.product.id;
   const imagePath = `https://kea-alt-del.dk/t7/images/webp/640/${productid}.webp`;
