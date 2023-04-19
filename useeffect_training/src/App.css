@@ -40,7 +40,7 @@ li {
   animation-iteration-count: infinite;
 }
 
-@keyframes onsaleblink {
+/* @keyframes onsaleblink {
   from {
     background: yellow;
   }
@@ -48,4 +48,4 @@ li {
   to {
     background: #f2f2f2;
   }
-}
+} */

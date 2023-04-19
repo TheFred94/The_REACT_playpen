@@ -3,10 +3,11 @@ import "./App.css";
 
 // API: https://kea-alt-del.dk/t7/api/#parameters
 
-function App() {
+function App(item, id) {
   //  Creates state and set it to [] (an empty array)
   const [articles, setArticles] = useState([]);
   const [basket, setBasket] = useState([]);
+  const [count, setCount] = useState(item.count);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
@@ -18,6 +19,22 @@ function App() {
       });
   }, [page]);
 
+  // Removes the product from the Basket if the product.count is equal to or less than 1.
+  function decrementCount(id) {
+    const product = basket.find((item) => item.id === id);
+    if (product.count <= 1) {
+      setBasket((oldBasket) => oldBasket.filter((product) => product.id !== id));
+    } else {
+      const updatedBasket = basket.map((item) => (item.id === id ? { ...item, count: item.count - 1 } : item));
+      setBasket(updatedBasket);
+    }
+  }
+  function incrementCount(id) {
+    setBasket((oldBasket) => oldBasket.map((item) => (item.id === id ? { ...item, count: item.count + 1 } : item)));
+
+    console.log(basket);
+  }
+
   // Takes the state of the  and concats it with the product that corresponds to that of the "Buy Product" button
   function buyProduct(product) {
     // Find the basket item that matches the product ID
@@ -28,6 +45,7 @@ function App() {
       const updatedBasket = basket.map((item) => (item.id === product.id ? { ...item, count: item.count + 1 } : item));
       // Update the basket state with the updated basket
       setBasket(updatedBasket);
+      console.log(updatedBasket);
     } else {
       // If the product does not exist in the basket, add it as a new item with count = 1
       // Add the new product to the basket state
@@ -54,7 +72,7 @@ function App() {
         </section>
         <section className="Basket">
           {/* Sends down emptyBasket, removeProduct and basket to Basket component */}
-          <Basket emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
+          <Basket incrementCount={incrementCount} decrementCount={decrementCount} emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
         </section>
         <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
           Load 10 more products({page})
@@ -104,7 +122,7 @@ function Basket(props) {
         {/* Creates a new ...product with the spreat operator */}
         {props.basket.map((product) => (
           // Passes down removeProduct and the ...product variable down to the BasketProduct component
-          <BasketProduct removeProduct={props.removeProduct} product={{ ...product }} />
+          <BasketProduct incrementCount={props.incrementCount} decrementCount={props.decrementCount} removeProduct={props.removeProduct} product={{ ...product }} />
         ))}
       </ul>
     </>
@@ -124,6 +142,8 @@ function BasketProduct(props) {
         {/* If the count is greater that 0. If that is true it render the count paragraph */}
         <span>{props.product.count > 0 && <p>({props.product.count})</p>}</span>
         <img src={imagePath} />
+        <button onClick={() => props.incrementCount(props.product.id)}>+</button>
+        <button onClick={() => props.decrementCount(props.product.id)}>-</button>
         <button onClick={() => props.removeProduct(props.product.id)}>Remove product</button>
       </article>
     </li>
