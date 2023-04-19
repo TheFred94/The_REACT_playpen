@@ -7,7 +7,7 @@ function App(item, id) {
   //  Creates state and set it to [] (an empty array)
   const [articles, setArticles] = useState([]);
   const [basket, setBasket] = useState([]);
-  const [count, setCount] = useState(item.count);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ function App(item, id) {
         </section>
         <section className="Basket">
           {/* Sends down emptyBasket, removeProduct and basket to Basket component */}
-          <Basket incrementCount={incrementCount} decrementCount={decrementCount} emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
+          <Basket totalPrice={totalPrice} setTotalPrice={setTotalPrice} incrementCount={incrementCount} decrementCount={decrementCount} emptyBasket={emptyBasket} removeProduct={removeProduct} basket={basket} />
         </section>
         <button className="load_more_products" onClick={() => setPage((oldPage) => oldPage + 1)}>
           Load 10 more products({page})
@@ -114,10 +114,23 @@ function Product(props) {
 
 // Receives the props. from the App component
 function Basket(props) {
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    props.basket.forEach((item) => {
+      totalPrice += item.count * item.price;
+    });
+    props.setTotalPrice(totalPrice);
+  };
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [props.basket]);
+
   return (
     <>
       <ul>
         <h2>Basket</h2>
+        <h3>Total: {props.totalPrice},-</h3>
         <button onClick={() => props.emptyBasket(props.product)}>Remove all items</button>
         {/* Creates a new ...product with the spreat operator */}
         {props.basket.map((product) => (
@@ -138,7 +151,7 @@ function BasketProduct(props) {
     <li>
       <article className="product">
         <p>{props.product.productdisplayname}</p>
-        <p>Price: {props.product.price}</p>
+        <p>Price: {props.product.price},-</p>
         {/* If the count is greater that 0. If that is true it render the count paragraph */}
         <span>{props.product.count > 0 && <p>({props.product.count})</p>}</span>
         <img src={imagePath} />
